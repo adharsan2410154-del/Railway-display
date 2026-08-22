@@ -6,15 +6,16 @@
 
 /* =========================================================
    FIREBASE CONFIG
+   USE THE CONFIG FROM YOUR RAILWAY FIREBASE PROJECT
 ========================================================= */
 
 const firebaseConfig = {
-    apiKey: "AIzaSyB10_bGT07hinBy-Ua-cNk5-KrkQ9bS_D8",
-    authDomain: "railway-display-f1762.firebaseapp.com",
-    projectId: "railway-display-f1762",
-    storageBucket: "railway-display-f1762.firebasestorage.app",
-    messagingSenderId: "498931138295",
-    appId: "1:498931138295:web:6324553c0bfde335c95df2"
+    apiKey: "YOUR_RAILWAY_FIREBASE_API_KEY",
+    authDomain: "YOUR_RAILWAY_PROJECT.firebaseapp.com",
+    projectId: "YOUR_RAILWAY_PROJECT_ID",
+    storageBucket: "YOUR_RAILWAY_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_RAILWAY_SENDER_ID",
+    appId: "YOUR_RAILWAY_APP_ID"
 };
 
 
@@ -35,26 +36,42 @@ function updateClock() {
 
     const now = new Date();
 
-    const clock = document.getElementById("clock");
-    const date = document.getElementById("date");
+    const clock =
+        document.getElementById("clock");
+
+    const date =
+        document.getElementById("date");
+
 
     if (clock) {
+
         clock.textContent =
             now.toLocaleTimeString("en-IN", {
                 hour12: false
             });
+
     }
 
+
     if (date) {
+
         date.textContent =
             now.toLocaleDateString("en-IN", {
+
                 weekday: "long",
+
                 day: "2-digit",
+
                 month: "long",
+
                 year: "numeric"
+
             });
+
     }
+
 }
+
 
 updateClock();
 
@@ -62,7 +79,7 @@ setInterval(updateClock, 1000);
 
 
 /* =========================================================
-   CONVERT TIME TO MINUTES
+   CONVERT HH:MM TO MINUTES
 ========================================================= */
 
 function timeToMinutes(time) {
@@ -71,32 +88,73 @@ function timeToMinutes(time) {
         return 9999;
     }
 
+
     time = String(time).trim();
+
+
+    /*
+       *** means time unavailable.
+       Put such trains at the bottom.
+    */
 
     if (
         time === "***" ||
         time === "--:--"
     ) {
+
         return 9999;
+
     }
 
-    const parts = time.split(":");
+
+    const parts =
+        time.split(":");
+
 
     if (parts.length !== 2) {
+
         return 9999;
+
     }
 
-    const hours = parseInt(parts[0], 10);
-    const minutes = parseInt(parts[1], 10);
+
+    const hours =
+        parseInt(parts[0], 10);
+
+    const minutes =
+        parseInt(parts[1], 10);
+
 
     if (
         isNaN(hours) ||
         isNaN(minutes)
     ) {
+
         return 9999;
+
     }
 
-    return hours * 60 + minutes;
+
+    return (
+        hours * 60 +
+        minutes
+    );
+
+}
+
+
+/* =========================================================
+   GET DISPLAY TIME
+========================================================= */
+
+function getDisplayTime(time) {
+
+    if (!time) {
+        return "***";
+    }
+
+    return time;
+
 }
 
 
@@ -106,39 +164,24 @@ function timeToMinutes(time) {
 
 function sortTrains(trains) {
 
-    trains.sort(function(a, b) {
+    return trains.sort(function(a, b) {
 
-        const departureA =
-            timeToMinutes(a.departure);
+        const timeA =
+            timeToMinutes(
+                a.departure
+            );
 
-        const departureB =
-            timeToMinutes(b.departure);
 
-        return departureA - departureB;
+        const timeB =
+            timeToMinutes(
+                b.departure
+            );
+
+
+        return timeA - timeB;
 
     });
 
-    return trains;
-}
-
-
-/* =========================================================
-   GET TABLE BODY
-========================================================= */
-
-function getTableBody() {
-
-    /*
-       Try common IDs first.
-       If your HTML has a normal <tbody>,
-       use that automatically.
-    */
-
-    return (
-        document.getElementById("train-list") ||
-        document.getElementById("trainTableBody") ||
-        document.querySelector("tbody")
-    );
 }
 
 
@@ -148,77 +191,104 @@ function getTableBody() {
 
 function displayTrains(trains) {
 
-    const list = getTableBody();
+    const list =
+        document.getElementById(
+            "train-list"
+        );
+
 
     if (!list) {
 
         console.error(
-            "❌ Could not find train display container."
+            "train-list element not found."
         );
 
         return;
+
     }
 
-
-    /* SORT */
-
-    sortTrains(trains);
-
-
-    /* CLEAR OLD ROWS */
 
     list.innerHTML = "";
 
 
-    /* NO DATA */
-
     if (trains.length === 0) {
 
         list.innerHTML = `
-            <tr>
-                <td colspan="5"
-                    style="
-                        text-align:center;
-                        padding:40px;
-                    ">
-                    NO TRAINS AVAILABLE
-                </td>
-            </tr>
+
+            <div style="
+                text-align:center;
+                padding:40px;
+                color:#aaa;
+                font-size:24px;
+            ">
+
+                NO TRAINS AVAILABLE
+
+            </div>
+
         `;
 
         return;
+
     }
 
 
-    /* CREATE ROWS */
+    /* Sort automatically */
+
+    sortTrains(trains);
+
+
+    /* Create rows */
 
     trains.forEach(function(train) {
 
         const row =
-            document.createElement("tr");
+            document.createElement("div");
+
+
+        row.className =
+            "train-row";
 
 
         row.innerHTML = `
 
-            <td>
-                ${train.number}
-            </td>
+            <div class="train-number">
 
-            <td>
-                ${train.name}
-            </td>
+                ${train.number || ""}
 
-            <td>
-                ${train.arrival}
-            </td>
+            </div>
 
-            <td>
-                ${train.departure}
-            </td>
 
-            <td>
-                ${train.platform}
-            </td>
+            <div class="train-name">
+
+                ${train.name || ""}
+
+            </div>
+
+
+            <div class="train-arrival">
+
+                ${getDisplayTime(
+                    train.arrival
+                )}
+
+            </div>
+
+
+            <div class="train-departure">
+
+                ${getDisplayTime(
+                    train.departure
+                )}
+
+            </div>
+
+
+            <div class="train-platform">
+
+                ${train.platform || "***"}
+
+            </div>
 
         `;
 
@@ -234,7 +304,8 @@ function displayTrains(trains) {
    FIRESTORE LIVE LISTENER
 ========================================================= */
 
-db.collection("TRAINS")
+db.collection("trains")
+
     .onSnapshot(
 
         function(snapshot) {
@@ -248,40 +319,34 @@ db.collection("TRAINS")
                     doc.data();
 
 
-                /*
-                   IMPORTANT:
-                   Firebase fields are UPPERCASE.
-                */
-
                 trains.push({
 
                     id: doc.id,
 
                     number:
-                        data.NUMBER || "",
+                        data.number || "",
 
                     name:
-                        data.NAME || "",
+                        data.name || "",
 
                     arrival:
-                        data.ARRIVAL || "***",
+                        data.arrival || "",
 
                     departure:
-                        data.DEPARTURE || "***",
+                        data.departure || "",
 
                     platform:
-                        data.PLATFORM || "***"
+                        data.platform || "***"
 
                 });
 
             });
 
 
-            console.log(
-                "Firebase trains:",
-                trains
-            );
-
+            /*
+               Firebase data can be in ANY order.
+               displayTrains() sorts it by departure.
+            */
 
             displayTrains(trains);
 
@@ -291,9 +356,35 @@ db.collection("TRAINS")
         function(error) {
 
             console.error(
-                "❌ Firebase error:",
+                "Firebase error:",
                 error
             );
+
+
+            const list =
+                document.getElementById(
+                    "train-list"
+                );
+
+
+            if (list) {
+
+                list.innerHTML = `
+
+                    <div style="
+                        text-align:center;
+                        padding:40px;
+                        color:#ff4444;
+                        font-size:22px;
+                    ">
+
+                        DATABASE CONNECTION ERROR
+
+                    </div>
+
+                `;
+
+            }
 
         }
 
@@ -301,9 +392,60 @@ db.collection("TRAINS")
 
 
 /* =========================================================
-   DONE
+   RE-CHECK SORTING EVERY 30 SECONDS
 ========================================================= */
 
-console.log(
-    "🚆 ECE CENTRAL Railway Display Started"
-);
+setInterval(function() {
+
+    db.collection("trains")
+        .get()
+
+        .then(function(snapshot) {
+
+            const trains = [];
+
+
+            snapshot.forEach(function(doc) {
+
+                const data =
+                    doc.data();
+
+
+                trains.push({
+
+                    id: doc.id,
+
+                    number:
+                        data.number || "",
+
+                    name:
+                        data.name || "",
+
+                    arrival:
+                        data.arrival || "",
+
+                    departure:
+                        data.departure || "",
+
+                    platform:
+                        data.platform || "***"
+
+                });
+
+            });
+
+
+            displayTrains(trains);
+
+        })
+
+        .catch(function(error) {
+
+            console.error(
+                "Refresh error:",
+                error
+            );
+
+        });
+
+}, 30000);
