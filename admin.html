@@ -2,16 +2,12 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Railway Display - Admin</title>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -83,8 +79,24 @@
             background: #1976d2;
         }
 
+        .logout {
+            background: #9b1c1c;
+        }
+
+        .logout:hover {
+            background: #c62828;
+        }
+
         .cancel {
             background: #555;
+        }
+
+        .edit-btn {
+            background: #087f5b;
+        }
+
+        .delete-btn {
+            background: #b3261e;
         }
 
         .train-item {
@@ -107,12 +119,9 @@
             line-height: 1.6;
         }
 
-        .edit-btn {
-            background: #087f5b;
-        }
-
-        .delete-btn {
-            background: #b3261e;
+        #loginSection,
+        #adminSection {
+            display: none;
         }
 
         #status {
@@ -121,8 +130,18 @@
             font-weight: bold;
         }
 
-    </style>
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 15px;
+        }
 
+        .success {
+            color: lightgreen;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 
 
@@ -130,106 +149,159 @@
 
 <div class="container">
 
-    <h1>🚆 ECE CENTRAL</h1>
+    <!-- =========================
+         LOGIN
+    ========================== -->
 
-    <div class="subtitle">
-        Railway Display Admin Panel
-    </div>
+    <div id="loginSection">
 
+        <div class="card">
 
-    <!-- ADD / EDIT FORM -->
+            <h1>🔐 RAILWAY ADMIN</h1>
 
-    <div class="card">
+            <div class="subtitle">
+                ECE CENTRAL Railway Display
+            </div>
 
-        <h2 id="formTitle">
-            Add Train
-        </h2>
+            <label>Email</label>
 
+            <input
+                id="loginEmail"
+                type="email"
+                placeholder="Enter admin email"
+            >
 
-        <label>
-            Train Number
-        </label>
+            <label>Password</label>
 
-        <input
-            id="number"
-            type="text"
-            placeholder="12661"
-        >
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="Enter password"
+            >
 
+            <button onclick="login()">
+                LOGIN
+            </button>
 
-        <label>
-            Train Name
-        </label>
+            <div id="loginStatus"></div>
 
-        <input
-            id="name"
-            type="text"
-            placeholder="POTHIGAI EXPRESS"
-        >
-
-
-        <label>
-            Arrival
-        </label>
-
-        <input
-            id="arrival"
-            type="text"
-            placeholder="18:00"
-        >
-
-
-        <label>
-            Departure
-        </label>
-
-        <input
-            id="departure"
-            type="text"
-            placeholder="18:05"
-        >
-
-
-        <label>
-            Platform
-        </label>
-
-        <input
-            id="platform"
-            type="text"
-            placeholder="3"
-        >
-
-
-        <button onclick="saveTrain()">
-            SAVE TRAIN
-        </button>
-
-        <button
-            id="cancelButton"
-            class="cancel"
-            onclick="cancelEdit()"
-            style="display:none;"
-        >
-            CANCEL EDIT
-        </button>
-
-
-        <div id="status"></div>
+        </div>
 
     </div>
 
 
-    <!-- EXISTING TRAINS -->
+    <!-- =========================
+         ADMIN PANEL
+    ========================== -->
 
-    <div class="card">
+    <div id="adminSection">
 
-        <h2>
-            Current Trains
-        </h2>
+        <h1>🚆 ECE CENTRAL</h1>
 
-        <div id="trainList">
-            Loading...
+        <div class="subtitle">
+            Railway Display Admin Panel
+        </div>
+
+        <div class="card">
+
+            <button
+                class="logout"
+                onclick="logout()"
+            >
+                LOGOUT
+            </button>
+
+        </div>
+
+
+        <!-- ADD / EDIT TRAIN -->
+
+        <div class="card">
+
+            <h2 id="formTitle">
+                Add Train
+            </h2>
+
+            <label>
+                Train Number
+            </label>
+
+            <input
+                id="number"
+                type="text"
+                placeholder="12661"
+            >
+
+            <label>
+                Train Name
+            </label>
+
+            <input
+                id="name"
+                type="text"
+                placeholder="POTHIGAI EXPRESS"
+            >
+
+            <label>
+                Arrival
+            </label>
+
+            <input
+                id="arrival"
+                type="text"
+                placeholder="18:00"
+            >
+
+            <label>
+                Departure
+            </label>
+
+            <input
+                id="departure"
+                type="text"
+                placeholder="18:05"
+            >
+
+            <label>
+                Platform
+            </label>
+
+            <input
+                id="platform"
+                type="text"
+                placeholder="3"
+            >
+
+            <button onclick="saveTrain()">
+                SAVE TRAIN
+            </button>
+
+            <button
+                id="cancelButton"
+                class="cancel"
+                onclick="cancelEdit()"
+                style="display:none;"
+            >
+                CANCEL EDIT
+            </button>
+
+            <div id="status"></div>
+
+        </div>
+
+
+        <!-- CURRENT TRAINS -->
+
+        <div class="card">
+
+            <h2>
+                Current Trains
+            </h2>
+
+            <div id="trainList">
+                Loading...
+            </div>
+
         </div>
 
     </div>
@@ -237,9 +309,13 @@
 </div>
 
 
-<!-- FIREBASE -->
+<!-- =========================
+     FIREBASE SDK
+========================== -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
@@ -265,15 +341,110 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+
+const auth = firebase.auth();
+
 const db = firebase.firestore();
 
 
 let editingId = null;
 
 
-/* =========================================
+/* =========================
+   AUTHENTICATION
+========================= */
+
+auth.onAuthStateChanged(function(user) {
+
+    if (user) {
+
+        document.getElementById("loginSection")
+            .style.display = "none";
+
+        document.getElementById("adminSection")
+            .style.display = "block";
+
+        loadTrains();
+
+    } else {
+
+        document.getElementById("loginSection")
+            .style.display = "block";
+
+        document.getElementById("adminSection")
+            .style.display = "none";
+
+    }
+
+});
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function login() {
+
+    const email =
+        document.getElementById("loginEmail").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+
+    if (!email || !password) {
+
+        showLoginStatus(
+            "Enter email and password.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    auth.signInWithEmailAndPassword(
+        email,
+        password
+    )
+
+    .then(function() {
+
+        showLoginStatus(
+            "Login successful!",
+            "success"
+        );
+
+    })
+
+    .catch(function(error) {
+
+        console.error(error);
+
+        showLoginStatus(
+            "Login failed: " + error.message,
+            "error"
+        );
+
+    });
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout() {
+
+    auth.signOut();
+
+}
+
+
+/* =========================
    SAVE TRAIN
-========================================= */
+========================= */
 
 async function saveTrain() {
 
@@ -362,7 +533,7 @@ async function saveTrain() {
         console.error(error);
 
         showStatus(
-            "Error saving train: " + error.message,
+            "Error: " + error.message,
             "red"
         );
 
@@ -371,152 +542,174 @@ async function saveTrain() {
 }
 
 
-/* =========================================
+/* =========================
    LOAD TRAINS
-========================================= */
+========================= */
 
-db.collection("trains")
-    .onSnapshot(function(snapshot) {
+function loadTrains() {
 
-        const list =
-            document.getElementById("trainList");
+    db.collection("trains")
+        .onSnapshot(function(snapshot) {
 
-        list.innerHTML = "";
+            const list =
+                document.getElementById("trainList");
+
+            list.innerHTML = "";
 
 
-        if (snapshot.empty) {
+            if (snapshot.empty) {
 
-            list.innerHTML =
-                "<p>No trains available.</p>";
+                list.innerHTML =
+                    "<p>No trains available.</p>";
+
+                return;
+
+            }
+
+
+            snapshot.forEach(function(doc) {
+
+                const train = doc.data();
+
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "train-item";
+
+
+                item.innerHTML = `
+
+                    <div class="train-title">
+
+                        ${train.number}
+                        -
+                        ${train.name}
+
+                    </div>
+
+                    <div class="train-details">
+
+                        Arrival:
+                        ${train.arrival}
+
+                        <br>
+
+                        Departure:
+                        ${train.departure}
+
+                        <br>
+
+                        Platform:
+                        ${train.platform}
+
+                    </div>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editTrain(
+                            '${doc.id}'
+                        )"
+                    >
+                        EDIT
+                    </button>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteTrain(
+                            '${doc.id}'
+                        )"
+                    >
+                        DELETE
+                    </button>
+
+                `;
+
+
+                list.appendChild(item);
+
+            });
+
+        });
+
+}
+
+
+/* =========================
+   EDIT TRAIN
+========================= */
+
+async function editTrain(id) {
+
+    try {
+
+        const doc =
+            await db
+                .collection("trains")
+                .doc(id)
+                .get();
+
+
+        if (!doc.exists) {
 
             return;
 
         }
 
 
-        snapshot.forEach(function(doc) {
-
-            const train = doc.data();
+        const train = doc.data();
 
 
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "train-item";
+        editingId = id;
 
 
-            item.innerHTML = `
+        document.getElementById("number").value =
+            train.number || "";
 
-                <div class="train-title">
+        document.getElementById("name").value =
+            train.name || "";
 
-                    ${train.number}
-                    -
-                    ${train.name}
+        document.getElementById("arrival").value =
+            train.arrival || "";
 
-                </div>
+        document.getElementById("departure").value =
+            train.departure || "";
 
-                <div class="train-details">
-
-                    Arrival:
-                    ${train.arrival}
-
-                    <br>
-
-                    Departure:
-                    ${train.departure}
-
-                    <br>
-
-                    Platform:
-                    ${train.platform}
-
-                </div>
+        document.getElementById("platform").value =
+            train.platform || "";
 
 
-                <button
-                    class="edit-btn"
-                    onclick="editTrain(
-                        '${doc.id}',
-                        '${escapeValue(train.number)}',
-                        '${escapeValue(train.name)}',
-                        '${escapeValue(train.arrival)}',
-                        '${escapeValue(train.departure)}',
-                        '${escapeValue(train.platform)}'
-                    )"
-                >
-                    EDIT
-                </button>
+        document.getElementById("formTitle")
+            .textContent = "Edit Train";
 
 
-                <button
-                    class="delete-btn"
-                    onclick="deleteTrain('${doc.id}')"
-                >
-                    DELETE
-                </button>
-
-            `;
+        document.getElementById("cancelButton")
+            .style.display = "block";
 
 
-            list.appendChild(item);
-
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
         });
 
-    });
+    }
 
+    catch (error) {
 
-/* =========================================
-   EDIT TRAIN
-========================================= */
+        showStatus(
+            "Unable to load train.",
+            "red"
+        );
 
-function editTrain(
-    id,
-    number,
-    name,
-    arrival,
-    departure,
-    platform
-) {
-
-    editingId = id;
-
-
-    document.getElementById("number").value =
-        number;
-
-    document.getElementById("name").value =
-        name;
-
-    document.getElementById("arrival").value =
-        arrival;
-
-    document.getElementById("departure").value =
-        departure;
-
-    document.getElementById("platform").value =
-        platform;
-
-
-    document.getElementById("formTitle")
-        .textContent = "Edit Train";
-
-
-    document.getElementById("cancelButton")
-        .style.display = "block";
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    }
 
 }
 
 
-/* =========================================
+/* =========================
    DELETE TRAIN
-========================================= */
+========================= */
 
 async function deleteTrain(id) {
 
@@ -527,7 +720,9 @@ async function deleteTrain(id) {
 
 
     if (!confirmDelete) {
+
         return;
+
     }
 
 
@@ -548,6 +743,8 @@ async function deleteTrain(id) {
 
     catch (error) {
 
+        console.error(error);
+
         showStatus(
             "Delete failed: " + error.message,
             "red"
@@ -558,9 +755,9 @@ async function deleteTrain(id) {
 }
 
 
-/* =========================================
+/* =========================
    CANCEL EDIT
-========================================= */
+========================= */
 
 function cancelEdit() {
 
@@ -571,9 +768,9 @@ function cancelEdit() {
 }
 
 
-/* =========================================
+/* =========================
    CLEAR FORM
-========================================= */
+========================= */
 
 function clearForm() {
 
@@ -601,9 +798,9 @@ function clearForm() {
 }
 
 
-/* =========================================
-   STATUS MESSAGE
-========================================= */
+/* =========================
+   STATUS
+========================= */
 
 function showStatus(message, color) {
 
@@ -624,15 +821,14 @@ function showStatus(message, color) {
 }
 
 
-/* =========================================
-   SAFE DISPLAY
-========================================= */
+function showLoginStatus(message, type) {
 
-function escapeValue(value) {
+    const status =
+        document.getElementById("loginStatus");
 
-    return String(value)
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'");
+    status.textContent = message;
+
+    status.className = type;
 
 }
 
