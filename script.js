@@ -1,21 +1,21 @@
 /* =========================================================
    ECE CENTRAL - RAILWAY DISPLAY
-   FIREBASE + LIVE TIME SORTING
+   FIREBASE + DEPARTURE TIME SORTING
 ========================================================= */
 
 
 /* =========================================================
    FIREBASE CONFIG
-   USE THE CONFIG FROM YOUR RAILWAY FIREBASE PROJECT
+   ⚠️ KEEP YOUR ORIGINAL WORKING RAILWAY CONFIG HERE
 ========================================================= */
 
 const firebaseConfig = {
-    apiKey: "YOUR_RAILWAY_FIREBASE_API_KEY",
-    authDomain: "YOUR_RAILWAY_PROJECT.firebaseapp.com",
-    projectId: "YOUR_RAILWAY_PROJECT_ID",
-    storageBucket: "YOUR_RAILWAY_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_RAILWAY_SENDER_ID",
-    appId: "YOUR_RAILWAY_APP_ID"
+    apiKey: "YOUR_EXISTING_RAILWAY_API_KEY",
+    authDomain: "YOUR_EXISTING_RAILWAY_AUTH_DOMAIN",
+    projectId: "YOUR_EXISTING_RAILWAY_PROJECT_ID",
+    storageBucket: "YOUR_EXISTING_RAILWAY_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_EXISTING_RAILWAY_SENDER_ID",
+    appId: "YOUR_EXISTING_RAILWAY_APP_ID"
 };
 
 
@@ -36,12 +36,8 @@ function updateClock() {
 
     const now = new Date();
 
-    const clock =
-        document.getElementById("clock");
-
-    const date =
-        document.getElementById("date");
-
+    const clock = document.getElementById("clock");
+    const date = document.getElementById("date");
 
     if (clock) {
 
@@ -52,26 +48,19 @@ function updateClock() {
 
     }
 
-
     if (date) {
 
         date.textContent =
             now.toLocaleDateString("en-IN", {
-
                 weekday: "long",
-
                 day: "2-digit",
-
                 month: "long",
-
                 year: "numeric"
-
             });
 
     }
 
 }
-
 
 updateClock();
 
@@ -79,7 +68,7 @@ setInterval(updateClock, 1000);
 
 
 /* =========================================================
-   CONVERT HH:MM TO MINUTES
+   CONVERT TIME TO MINUTES
 ========================================================= */
 
 function timeToMinutes(time) {
@@ -88,97 +77,52 @@ function timeToMinutes(time) {
         return 9999;
     }
 
-
     time = String(time).trim();
-
-
-    /*
-       *** means time unavailable.
-       Put such trains at the bottom.
-    */
 
     if (
         time === "***" ||
         time === "--:--"
     ) {
-
         return 9999;
-
     }
 
+    const match =
+        time.match(/^(\d{1,2}):(\d{2})/);
 
-    const parts =
-        time.split(":");
-
-
-    if (parts.length !== 2) {
-
+    if (!match) {
         return 9999;
-
     }
-
 
     const hours =
-        parseInt(parts[0], 10);
+        parseInt(match[1], 10);
 
     const minutes =
-        parseInt(parts[1], 10);
-
+        parseInt(match[2], 10);
 
     if (
         isNaN(hours) ||
         isNaN(minutes)
     ) {
-
         return 9999;
-
     }
 
-
-    return (
-        hours * 60 +
-        minutes
-    );
+    return hours * 60 + minutes;
 
 }
 
 
 /* =========================================================
-   GET DISPLAY TIME
-========================================================= */
-
-function getDisplayTime(time) {
-
-    if (!time) {
-        return "***";
-    }
-
-    return time;
-
-}
-
-
-/* =========================================================
-   SORT TRAINS BY DEPARTURE TIME
+   SORT BY DEPARTURE TIME
 ========================================================= */
 
 function sortTrains(trains) {
 
-    return trains.sort(function(a, b) {
+    trains.sort(function(a, b) {
 
-        const timeA =
-            timeToMinutes(
-                a.departure
-            );
-
-
-        const timeB =
-            timeToMinutes(
-                b.departure
-            );
-
-
-        return timeA - timeB;
+        return (
+            timeToMinutes(a.departure) -
+            timeToMinutes(b.departure)
+        );
 
     });
 
@@ -192,20 +136,22 @@ function sortTrains(trains) {
 function displayTrains(trains) {
 
     const list =
-        document.getElementById(
-            "train-list"
-        );
-
+        document.getElementById("train-list");
 
     if (!list) {
 
         console.error(
-            "train-list element not found."
+            "train-list element not found"
         );
 
         return;
 
     }
+
+
+    /* Sort BEFORE displaying */
+
+    sortTrains(trains);
 
 
     list.innerHTML = "";
@@ -233,18 +179,10 @@ function displayTrains(trains) {
     }
 
 
-    /* Sort automatically */
-
-    sortTrains(trains);
-
-
-    /* Create rows */
-
     trains.forEach(function(train) {
 
         const row =
             document.createElement("div");
-
 
         row.className =
             "train-row";
@@ -253,41 +191,23 @@ function displayTrains(trains) {
         row.innerHTML = `
 
             <div class="train-number">
-
                 ${train.number || ""}
-
             </div>
-
 
             <div class="train-name">
-
                 ${train.name || ""}
-
             </div>
-
 
             <div class="train-arrival">
-
-                ${getDisplayTime(
-                    train.arrival
-                )}
-
+                ${train.arrival || "***"}
             </div>
-
 
             <div class="train-departure">
-
-                ${getDisplayTime(
-                    train.departure
-                )}
-
+                ${train.departure || "***"}
             </div>
 
-
             <div class="train-platform">
-
                 ${train.platform || "***"}
-
             </div>
 
         `;
@@ -301,7 +221,7 @@ function displayTrains(trains) {
 
 
 /* =========================================================
-   FIRESTORE LIVE LISTENER
+   FIREBASE LIVE DATA
 ========================================================= */
 
 db.collection("trains")
@@ -343,10 +263,11 @@ db.collection("trains")
             });
 
 
-            /*
-               Firebase data can be in ANY order.
-               displayTrains() sorts it by departure.
-            */
+            console.log(
+                "Trains received:",
+                trains
+            );
+
 
             displayTrains(trains);
 
@@ -360,92 +281,6 @@ db.collection("trains")
                 error
             );
 
-
-            const list =
-                document.getElementById(
-                    "train-list"
-                );
-
-
-            if (list) {
-
-                list.innerHTML = `
-
-                    <div style="
-                        text-align:center;
-                        padding:40px;
-                        color:#ff4444;
-                        font-size:22px;
-                    ">
-
-                        DATABASE CONNECTION ERROR
-
-                    </div>
-
-                `;
-
-            }
-
         }
 
     );
-
-
-/* =========================================================
-   RE-CHECK SORTING EVERY 30 SECONDS
-========================================================= */
-
-setInterval(function() {
-
-    db.collection("trains")
-        .get()
-
-        .then(function(snapshot) {
-
-            const trains = [];
-
-
-            snapshot.forEach(function(doc) {
-
-                const data =
-                    doc.data();
-
-
-                trains.push({
-
-                    id: doc.id,
-
-                    number:
-                        data.number || "",
-
-                    name:
-                        data.name || "",
-
-                    arrival:
-                        data.arrival || "",
-
-                    departure:
-                        data.departure || "",
-
-                    platform:
-                        data.platform || "***"
-
-                });
-
-            });
-
-
-            displayTrains(trains);
-
-        })
-
-        .catch(function(error) {
-
-            console.error(
-                "Refresh error:",
-                error
-            );
-
-        });
-
-}, 30000);
