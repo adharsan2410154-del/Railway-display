@@ -1,50 +1,76 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyB10_bGT07hinBy-Ua-cNk5-KrkQ9bS_D8",
+    authDomain: "railway-display-f1762.firebaseapp.com",
+    projectId: "railway-display-f1762",
+    storageBucket: "railway-display-f1762.firebasestorage.app",
+    messagingSenderId: "498931138295",
+    appId: "1:498931138295:web:6324553c0bfde335c95df2"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
 /* =========================================
    TRAIN TIMETABLE
    EDIT ONLY THIS SECTION
 ========================================= */
 
-const trains = [
+const trainList = document.getElementById("train-list");
 
-    {
-        number: "12661",
-        name: "Nelson VB",
-        arrival: "17:05",
-        departure: "17:15",
-        platform: "**"
-    },
+function displayTrains(trains) {
 
-   
-    {
-        number: "20635",
-        name: "Annadurai EXPRESS",
-        arrival: "17:20",
-        departure: "17:25",
-        platform: "***"
-    },
+    trainList.innerHTML = "";
 
-   
-    {
-        number: "56721",
-        name: "Hanis Passenger",
-        arrival: "",
-        departure: "17:15",
-        platform: "***"
-    },
+    trains.forEach(function(train) {
 
-   
+        const row = document.createElement("div");
 
-    {
-        number: "06013",
-        name: "Devesh Special",
-        arrival: "17:45",
-        departure: "17:50",
-        platform: "LATE"
-    },
+        row.className = "train-row";
 
-   
-    
+        row.innerHTML = `
+            <div class="train-number">
+                ${train.number}
+            </div>
 
-];
+            <div class="train-name">
+                ${train.name}
+            </div>
+
+            <div class="train-arrival">
+                ${train.arrival}
+            </div>
+
+            <div class="train-departure">
+                ${train.departure}
+            </div>
+
+            <div class="train-platform">
+                ${train.platform}
+            </div>
+        `;
+
+        trainList.appendChild(row);
+    });
+}
+
+
+/* FIREBASE LIVE DATABASE */
+
+db.collection("trains").onSnapshot(function(snapshot) {
+
+    const trains = [];
+
+    snapshot.forEach(function(doc) {
+
+        trains.push(doc.data());
+
+    });
+
+    displayTrains(trains);
+
+});
+
 
 
 /* =========================================
