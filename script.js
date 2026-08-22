@@ -13,6 +13,7 @@ const trains = [
         platform: "4"
     },
 
+   
     {
         number: "20635",
         name: "ANANTHAPURI EXPRESS",
@@ -21,6 +22,26 @@ const trains = [
         platform: "2"
     },
 
+   
+    {
+        number: "",
+        name: "",
+        arrival: "",
+        departure: "",
+        platform: ""
+    },
+
+   
+
+    {
+        number: "",
+        name: "",
+        arrival: "",
+        departure: "",
+        platform: ""
+    },
+
+   
     
 
 ];
