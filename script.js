@@ -10,12 +10,13 @@
 ========================================================= */
 
 const firebaseConfig = {
-    apiKey: "YOUR_EXISTING_RAILWAY_API_KEY",
-    authDomain: "YOUR_EXISTING_RAILWAY_AUTH_DOMAIN",
-    projectId: "YOUR_EXISTING_RAILWAY_PROJECT_ID",
-    storageBucket: "YOUR_EXISTING_RAILWAY_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_EXISTING_RAILWAY_SENDER_ID",
-    appId: "YOUR_EXISTING_RAILWAY_APP_ID"
+    apiKey: "AIzaSyB10_bGT07hinBy-Ua-cNk5-KrkQ9bS_D8",
+    authDomain: "railway-display-f1762.firebaseapp.com",
+    projectId: "railway-display-f1762",
+    storageBucket: "railway-display-f1762.firebasestorage.app",
+    messagingSenderId: "498931138295",
+    appId: "1:498931138295:web:6324553c0bfde335c95df2",
+    measurementId: "G-D4HYD29442"
 };
 
 
