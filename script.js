@@ -7,7 +7,7 @@ const trains = [
 
     {
         number: "12661",
-        name: "POTHIGAI SUPERFAST EXPRESS",
+        name: "Neelesh Thevediya express",
         arrival: "07:38",
         departure: "07:45",
         platform: "4"
