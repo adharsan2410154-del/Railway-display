@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,47 +16,45 @@
 
 <body>
 
-    <div class="station-board">
+    <div class="railway-screen">
 
+        <!-- TOP RAILWAY HEADER -->
 
-        <!-- TOP HEADER -->
+        <header class="railway-header">
 
-        <header class="top-header">
+            <div class="railway-left">
 
-
-            <!-- RAILWAY -->
-
-            <div class="railway-info">
-
-                <div class="railway-logo">
+                <div class="sr-emblem">
                     SR
                 </div>
 
-                <div class="railway-name">
-                    SOUTHERN RAILWAY
-                </div>
+                <div>
+                    <div class="railway-name">
+                        SOUTHERN RAILWAY
+                    </div>
 
-                <div class="welcome">
-                    WELCOMES YOU
+                    <div class="railway-subtitle">
+                        CHENNAI DIVISION
+                    </div>
                 </div>
 
             </div>
 
 
-            <!-- STATION -->
+            <div class="station-center">
 
-            <div class="station-info">
+                <div class="station-name">
+                    ECE CENTRAL
+                </div>
 
-                <h1>ECE CENTRAL</h1>
-
-                <h2>RAILWAY STATION</h2>
+                <div class="station-type">
+                    RAILWAY STATION
+                </div>
 
             </div>
 
 
-            <!-- CLOCK -->
-
-            <div class="time-info">
+            <div class="clock-area">
 
                 <div id="clock">
                     00:00:00
@@ -72,12 +69,26 @@
         </header>
 
 
+        <!-- BOARD TITLE -->
 
-        <!-- TABLE HEADER -->
+        <div class="board-title">
+
+            <span class="indicator"></span>
+
+            <span>
+                ARRIVALS / DEPARTURES
+            </span>
+
+            <span class="indicator"></span>
+
+        </div>
+
+
+        <!-- COLUMN HEADERS -->
 
         <div class="table-header">
 
-            <div>TRAIN NUMBER</div>
+            <div>TRAIN NO.</div>
 
             <div>TRAIN NAME</div>
 
@@ -90,46 +101,54 @@
         </div>
 
 
-
-        <!-- TRAIN DISPLAY -->
+        <!-- FIREBASE TRAIN DATA
+             script.js fills this area -->
 
         <main class="train-window">
 
-            <div id="train-list">
-
-                <!-- JavaScript inserts trains here -->
-
-            </div>
+            <div id="train-list"></div>
 
         </main>
 
 
-
-        <!-- BOTTOM MESSAGE -->
+        <!-- BOTTOM INFORMATION BAR -->
 
         <footer class="bottom-bar">
 
-            <div class="scrolling-message">
+            <div class="live-status">
 
-                PASSENGERS ARE REQUESTED TO CHECK PLATFORM CHANGES
-                &nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp;
-                PLEASE STAND BEHIND THE YELLOW LINE
-                &nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp;
-                HAVE A SAFE JOURNEY
+                <span class="green-dot"></span>
+
+                LIVE
+
+            </div>
+
+            <div class="announcement">
+
+                PLEASE CHECK THE DISPLAY FOR
+                PLATFORM CHANGES
+
+            </div>
+
+            <div class="station-code">
+
+                ECE
 
             </div>
 
         </footer>
 
-
     </div>
 
 
+    <!-- FIREBASE -->
+
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="script.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script src="script.js"></script>
 
 </body>
 
 </html>
-```
