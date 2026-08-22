@@ -1,11 +1,11 @@
-
-/* =========================================
-   BASIC RESET
-========================================= */
+/* =====================================================
+   REALISTIC RAILWAY ELECTRONIC DISPLAY
+===================================================== */
 
 * {
     box-sizing: border-box;
 }
+
 
 html,
 body {
@@ -14,236 +14,357 @@ body {
     margin: 0;
 }
 
+
 body {
 
     background:
         radial-gradient(
-            circle at center,
-            #20252a 0%,
-            #090b0d 70%,
+            ellipse at center,
+            #222 0%,
+            #0b0b0b 65%,
             #000 100%
         );
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        "Arial Narrow",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: #f5a623;
 
     overflow: hidden;
-
-    color: white;
 }
 
 
-/* =========================================
-   MAIN BOARD
-========================================= */
+/* =====================================================
+   MAIN DISPLAY
+===================================================== */
 
-.station-board {
+.railway-screen {
 
     width: 100vw;
+
     height: 100vh;
 
-    background: #05080b;
+    background:
+        linear-gradient(
+            180deg,
+            #070707,
+            #101010
+        );
 
-    border: 7px solid #17191b;
+    border: 12px solid #292929;
 
     box-shadow:
-        inset 0 0 45px rgba(0,0,0,.9),
-        0 0 35px rgba(0,0,0,.9);
+
+        inset 0 0 35px #000,
+
+        0 0 25px #000;
 
     display: flex;
 
     flex-direction: column;
 
-    position: relative;
-
     overflow: hidden;
+
+    position: relative;
 }
 
 
-/* =========================================
-   HEADER
-========================================= */
+/* =====================================================
+   TOP HEADER
+===================================================== */
 
-.top-header {
+.railway-header {
 
-    height: 18%;
+    height: 19%;
 
     min-height: 125px;
 
     display: grid;
 
     grid-template-columns:
-        25%
-        50%
-        25%;
+        27%
+        46%
+        27%;
 
     align-items: center;
 
     background:
+
         linear-gradient(
             180deg,
-            #092352 0%,
-            #061532 100%
+            #123c70 0%,
+            #08244a 48%,
+            #061a36 100%
         );
 
-    border-bottom: 3px solid #1d5db2;
+    border-bottom:
+        4px solid #d59b25;
+
+    box-shadow:
+        0 4px 10px #000;
 
 }
 
 
-/* =========================================
-   RAILWAY INFORMATION
-========================================= */
+/* =====================================================
+   LEFT RAILWAY SECTION
+===================================================== */
 
-.railway-info {
+.railway-left {
 
-    text-align: center;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
 
     padding: 10px;
 }
 
 
-.railway-logo {
+.sr-emblem {
 
-    width: 58px;
-    height: 58px;
+    width: 62px;
 
-    margin: auto;
+    height: 62px;
 
-    border: 3px solid #fff;
+    border:
+        3px solid #f4d06f;
 
     border-radius: 50%;
 
     display: flex;
 
+    align-items: center;
+
     justify-content: center;
 
-    align-items: center;
+    color: #f4d06f;
 
     font-size: 21px;
 
-    font-weight: bold;
+    font-weight: 900;
+
+    letter-spacing: 1px;
 
 }
 
 
 .railway-name {
 
-    margin-top: 7px;
+    color: #fff;
 
-    font-size: clamp(13px, 1.3vw, 20px);
-
-    font-weight: bold;
-
-    letter-spacing: 1px;
-}
-
-
-.welcome {
-
-    margin-top: 3px;
-
-    font-size: 10px;
-
-    letter-spacing: 3px;
-
-    color: #bfc5cc;
-}
-
-
-/* =========================================
-   STATION NAME
-========================================= */
-
-.station-info {
-
-    text-align: center;
-}
-
-
-.station-info h1 {
-
-    margin: 0;
-
-    font-size: clamp(32px, 4vw, 65px);
+    font-size:
+        clamp(13px, 1.35vw, 20px);
 
     font-weight: 900;
 
-    letter-spacing: 5px;
+    letter-spacing: 1.5px;
 
-    text-shadow:
-        0 2px 3px #000;
 }
 
 
-.station-info h2 {
+.railway-subtitle {
 
-    margin: 8px 0 0;
+    margin-top: 5px;
 
-    font-size: clamp(14px, 1.5vw, 23px);
+    color: #c8d3df;
 
-    font-weight: normal;
+    font-size:
+        clamp(9px, .8vw, 13px);
 
-    letter-spacing: 7px;
+    letter-spacing: 2px;
 
-    color: #d5d9df;
 }
 
 
-/* =========================================
-   CLOCK
-========================================= */
+/* =====================================================
+   CENTER STATION
+===================================================== */
 
-.time-info {
+.station-center {
 
     text-align: center;
 
-    padding: 10px;
+    border-left:
+        1px solid rgba(255,255,255,.15);
+
+    border-right:
+        1px solid rgba(255,255,255,.15);
+
+}
+
+
+.station-name {
+
+    color: #fff;
+
+    font-size:
+        clamp(32px, 4vw, 66px);
+
+    font-weight: 900;
+
+    letter-spacing: 6px;
+
+    text-shadow:
+        0 3px 4px #000;
+
+}
+
+
+.station-type {
+
+    margin-top: 8px;
+
+    color: #e2e7ec;
+
+    font-size:
+        clamp(12px, 1.2vw, 20px);
+
+    letter-spacing: 7px;
+
+}
+
+
+/* =====================================================
+   CLOCK
+===================================================== */
+
+.clock-area {
+
+    text-align: center;
+
 }
 
 
 #clock {
 
-    color: #ffd400;
+    color: #ffd34e;
 
-    font-size: clamp(25px, 3vw, 44px);
+    font-family:
+        "Courier New",
+        monospace;
 
-    font-weight: bold;
+    font-size:
+        clamp(26px, 3vw, 44px);
+
+    font-weight: 900;
 
     letter-spacing: 2px;
 
     text-shadow:
-        0 0 7px rgba(255,212,0,.7);
+
+        0 0 5px #f5a623,
+
+        0 0 12px rgba(245,166,35,.4);
+
 }
 
 
 #date {
 
-    margin-top: 6px;
-
-    font-size: clamp(11px, 1vw, 16px);
+    margin-top: 7px;
 
     color: #fff;
+
+    font-size:
+        clamp(10px, 1vw, 15px);
+
+    letter-spacing: 1px;
+
 }
 
 
-/* =========================================
+/* =====================================================
+   BOARD TITLE
+===================================================== */
+
+.board-title {
+
+    height: 7%;
+
+    min-height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    background: #111;
+
+    color: #ffd34e;
+
+    font-size:
+        clamp(13px, 1.2vw, 19px);
+
+    font-weight: 900;
+
+    letter-spacing: 4px;
+
+    border-bottom:
+        1px solid #664a17;
+
+}
+
+
+.indicator {
+
+    width: 10px;
+
+    height: 10px;
+
+    background: #f5a623;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 9px #f5a623;
+
+    animation: blink 1.4s infinite;
+
+}
+
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .25;
+    }
+
+}
+
+
+/* =====================================================
    TABLE HEADER
-========================================= */
+===================================================== */
 
 .table-header {
 
     height: 9%;
 
-    min-height: 55px;
+    min-height: 52px;
 
     display: grid;
 
     grid-template-columns:
         15%
-        39%
+        40%
         15%
         15%
-        16%;
+        15%;
 
     align-items: center;
 
@@ -252,42 +373,60 @@ body {
     background:
         linear-gradient(
             180deg,
-            #14519c,
-            #092e63
+            #303030,
+            #191919
         );
 
-    border-bottom: 2px solid #5785bc;
+    color: #d7d7d7;
 
-    font-size: clamp(13px, 1.4vw, 21px);
+    border-top:
+        1px solid #555;
 
-    font-weight: bold;
+    border-bottom:
+        2px solid #8c641c;
+
+    font-size:
+        clamp(12px, 1.3vw, 20px);
+
+    font-weight: 900;
 
     letter-spacing: 1px;
 
 }
 
 
-/* =========================================
-   TRAIN AREA
-========================================= */
+/* =====================================================
+   TRAIN DISPLAY AREA
+===================================================== */
 
 .train-window {
 
-    height: 63%;
-
-    overflow: hidden;
+    flex: 1;
 
     position: relative;
 
-    background: #05090d;
+    overflow: hidden;
+
+    background:
+
+        radial-gradient(
+            ellipse at center,
+            #151515 0%,
+            #070707 80%
+        );
+
 }
 
 
+/* =====================================================
+   TRAIN LIST
+===================================================== */
+
 #train-list {
 
-    width: 100%;
-
     position: absolute;
+
+    width: 100%;
 
     top: 0;
 
@@ -296,66 +435,69 @@ body {
 }
 
 
-/* =========================================
+/* =====================================================
    TRAIN ROW
-========================================= */
+===================================================== */
 
 .train-row {
 
     height: 10.5vh;
 
-    min-height: 62px;
+    min-height: 60px;
 
     display: grid;
 
     grid-template-columns:
         15%
-        39%
+        40%
         15%
         15%
-        16%;
+        15%;
 
     align-items: center;
 
     text-align: center;
 
-    border-bottom: 1px solid #27303a;
-
-    background: rgba(255,255,255,.015);
-
-    font-size: clamp(15px, 1.65vw, 26px);
-
-    font-weight: bold;
-
-}
-
-
-/* ALTERNATING ROW */
-
-.train-row:nth-child(even) {
+    border-bottom:
+        1px solid #2d2d2d;
 
     background:
-        rgba(255,255,255,.035);
+        rgba(255,255,255,.018);
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:
+        clamp(15px, 1.7vw, 27px);
+
+    font-weight: 900;
+
+    letter-spacing: .5px;
 
 }
 
 
-/* =========================================
+/* =====================================================
    TRAIN NUMBER
-========================================= */
+===================================================== */
 
 .train-number {
 
-    color: #ffd400;
+    color: #ffd34e;
 
     text-shadow:
-        0 0 6px rgba(255,212,0,.5);
+
+        0 0 4px #f5a623,
+
+        0 0 8px rgba(245,166,35,.35);
+
 }
 
 
-/* =========================================
+/* =====================================================
    TRAIN NAME
-========================================= */
+===================================================== */
 
 .train-name {
 
@@ -370,99 +512,148 @@ body {
     overflow: hidden;
 
     text-overflow: ellipsis;
+
 }
 
 
-/* =========================================
-   TIMES
-========================================= */
+/* =====================================================
+   ARRIVAL / DEPARTURE
+===================================================== */
 
 .train-arrival,
 .train-departure {
 
-    color: #ffffff;
+    color: #ffd34e;
 
-    letter-spacing: 1px;
+    text-shadow:
+        0 0 5px rgba(245,166,35,.4);
+
 }
 
 
-/* =========================================
+/* =====================================================
    PLATFORM
-========================================= */
+===================================================== */
 
 .train-platform {
 
-    color: #21aaff;
+    color: #fff;
 
-    font-size: clamp(21px, 2vw, 31px);
+    font-size:
+        clamp(20px, 2.1vw, 32px);
 
     font-weight: 900;
 
-    text-shadow:
-        0 0 7px rgba(33,170,255,.6);
 }
 
 
-/* =========================================
+/* =====================================================
    BOTTOM BAR
-========================================= */
+===================================================== */
 
 .bottom-bar {
 
-    height: 10%;
+    height: 9%;
 
-    min-height: 55px;
+    min-height: 52px;
 
-    display: flex;
+    display: grid;
+
+    grid-template-columns:
+        13%
+        74%
+        13%;
 
     align-items: center;
 
-    overflow: hidden;
+    background:
+        linear-gradient(
+            180deg,
+            #1b1b1b,
+            #090909
+        );
 
-    background: #050b11;
+    border-top:
+        3px solid #5b4216;
 
-    border-top: 3px solid #28333e;
-
-    white-space: nowrap;
+    color: #ddd;
 
 }
 
 
-.scrolling-message {
+.live-status {
 
-    padding-left: 100%;
+    text-align: center;
 
-    color: #ffd400;
+    color: #62d84e;
 
-    font-size: clamp(12px, 1.2vw, 19px);
+    font-weight: 900;
+
+    font-size:
+        clamp(10px, 1vw, 15px);
+
+}
+
+
+.green-dot {
+
+    display: inline-block;
+
+    width: 9px;
+
+    height: 9px;
+
+    margin-right: 5px;
+
+    border-radius: 50%;
+
+    background: #62d84e;
+
+    box-shadow:
+        0 0 7px #62d84e;
+
+}
+
+
+.announcement {
+
+    text-align: center;
+
+    color: #d0d0d0;
+
+    font-size:
+        clamp(10px, 1vw, 16px);
 
     font-weight: bold;
 
     letter-spacing: 1px;
 
-    animation:
-        ticker 22s linear infinite;
 }
 
 
-@keyframes ticker {
+.station-code {
 
-    from {
-        transform: translateX(0);
-    }
+    text-align: center;
 
-    to {
-        transform: translateX(-100%);
-    }
+    color: #ffd34e;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:
+        clamp(15px, 1.5vw, 23px);
+
+    font-weight: 900;
 
 }
 
 
-/* =========================================
-   SUBTLE LED SCREEN EFFECT
-========================================= */
+/* =====================================================
+   LED SCREEN EFFECT
+===================================================== */
 
-.station-board::after {
+.railway-screen::after {
 
     content: "";
 
@@ -473,74 +664,84 @@ body {
     pointer-events: none;
 
     background:
+
         repeating-linear-gradient(
             0deg,
-            rgba(255,255,255,.018),
+            rgba(255,255,255,.018) 0px,
             rgba(255,255,255,.018) 1px,
             transparent 1px,
             transparent 4px
         );
 
-    opacity: .45;
+    opacity: .35;
+
 }
 
 
-/* =========================================
+/* =====================================================
    MOBILE
-========================================= */
+===================================================== */
 
-@media(max-width: 700px) {
+@media (max-width: 700px) {
 
-    .station-board {
+    .railway-screen {
 
-        border-width: 3px;
-
-    }
-
-
-    .top-header {
-
-        height: 17%;
-
-        grid-template-columns:
-            1fr;
+        border-width: 4px;
 
     }
 
 
-    .railway-info {
+    .railway-header {
+
+        height: 21%;
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .railway-left {
 
         display: none;
 
     }
 
 
-    .station-info h1 {
+    .station-center {
 
-        font-size: 28px;
+        border: none;
 
     }
 
 
-    .station-info h2 {
+    .station-name {
 
-        font-size: 11px;
+        font-size: 30px;
+
+        letter-spacing: 3px;
+
+    }
+
+
+    .station-type {
+
+        font-size: 10px;
 
         letter-spacing: 4px;
 
     }
 
 
-    .time-info {
+    .clock-area {
 
-        padding-top: 4px;
+        margin-top: 5px;
 
     }
 
 
     #clock {
 
-        font-size: 22px;
+        font-size: 24px;
 
     }
 
@@ -560,4 +761,3 @@ body {
     }
 
 }
-```
