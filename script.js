@@ -7,19 +7,19 @@ const trains = [
 
     {
         number: "12661",
-        name: "Neelesh Thevediya express",
-        arrival: "07:38",
-        departure: "07:45",
-        platform: "4"
+        name: "Nelson VB",
+        arrival: "17:05",
+        departure: "17:15",
+        platform: "**"
     },
 
    
     {
         number: "20635",
-        name: "ANANTHAPURI EXPRESS",
-        arrival: "08:20",
-        departure: "08:25",
-        platform: "2"
+        name: "Annadurai EXPRESS",
+        arrival: "17:20",
+        departure: "17:25",
+        platform: "***"
     },
 
    
@@ -28,17 +28,17 @@ const trains = [
         name: "Hanis Passenger",
         arrival: "",
         departure: "17:15",
-        platform: "8"
+        platform: "***"
     },
 
    
 
     {
-        number: "",
-        name: "",
-        arrival: "",
-        departure: "",
-        platform: ""
+        number: "06013",
+        name: "Devesh Special",
+        arrival: "17:45",
+        departure: "17:50",
+        platform: "LATE"
     },
 
    
