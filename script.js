@@ -1,3 +1,7 @@
+/* =========================================
+   FIREBASE CONFIGURATION
+========================================= */
+
 const firebaseConfig = {
     apiKey: "AIzaSyB10_bGT07hinBy-Ua-cNk5-KrkQ9bS_D8",
     authDomain: "railway-display-f1762.firebaseapp.com",
@@ -6,71 +10,6 @@ const firebaseConfig = {
     messagingSenderId: "498931138295",
     appId: "1:498931138295:web:6324553c0bfde335c95df2"
 };
-
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.firestore();
-
-/* =========================================
-   TRAIN TIMETABLE
-   EDIT ONLY THIS SECTION
-========================================= */
-
-const trainList = document.getElementById("train-list");
-
-function displayTrains(trains) {
-
-    trainList.innerHTML = "";
-
-    trains.forEach(function(train) {
-
-        const row = document.createElement("div");
-
-        row.className = "train-row";
-
-        row.innerHTML = `
-            <div class="train-number">
-                ${train.number}
-            </div>
-
-            <div class="train-name">
-                ${train.name}
-            </div>
-
-            <div class="train-arrival">
-                ${train.arrival}
-            </div>
-
-            <div class="train-departure">
-                ${train.departure}
-            </div>
-
-            <div class="train-platform">
-                ${train.platform}
-            </div>
-        `;
-
-        trainList.appendChild(row);
-    });
-}
-
-
-/* FIREBASE LIVE DATABASE */
-
-db.collection("trains").onSnapshot(function(snapshot) {
-
-    const trains = [];
-
-    snapshot.forEach(function(doc) {
-
-        trains.push(doc.data());
-
-    });
-
-    displayTrains(trains);
-
-});
-
 
 
 /* =========================================
@@ -81,22 +20,18 @@ function updateClock() {
 
     const now = new Date();
 
-    const time =
+    document.getElementById("clock").textContent =
         now.toLocaleTimeString("en-IN", {
             hour12: false
         });
 
-    const date =
+    document.getElementById("date").textContent =
         now.toLocaleDateString("en-IN", {
             weekday: "long",
             day: "2-digit",
             month: "long",
             year: "numeric"
         });
-
-    document.getElementById("clock").textContent = time;
-
-    document.getElementById("date").textContent = date;
 }
 
 updateClock();
@@ -105,106 +40,93 @@ setInterval(updateClock, 1000);
 
 
 /* =========================================
-   DISPLAY TRAIN ROWS
+   FIREBASE + FIRESTORE
 ========================================= */
 
-const trainList =
-    document.getElementById("train-list");
+try {
+
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.firestore();
+
+    console.log("Firebase connected successfully");
 
 
-function displayTrains() {
+    /* =====================================
+       LOAD TRAINS FROM FIRESTORE
+    ===================================== */
 
-    trainList.innerHTML = "";
-
-    trains.forEach(function(train) {
-
-        const row =
-            document.createElement("div");
-
-        row.className = "train-row";
-
-        row.innerHTML = `
-            <div class="train-number">
-                ${train.number}
-            </div>
-
-            <div class="train-name">
-                ${train.name}
-            </div>
-
-            <div class="train-arrival">
-                ${train.arrival}
-            </div>
-
-            <div class="train-departure">
-                ${train.departure}
-            </div>
-
-            <div class="train-platform">
-                ${train.platform}
-            </div>
-        `;
-
-        trainList.appendChild(row);
-
-    });
-
-}
-
-displayTrains();
+    const trainList =
+        document.getElementById("train-list");
 
 
-/* =========================================
-   AUTOMATIC TRAIN SCROLL
-========================================= */
+    db.collection("trains").onSnapshot(
 
-let scrollPosition = 0;
+        function(snapshot) {
 
-const scrollSpeed = 0.30;
+            trainList.innerHTML = "";
 
+            snapshot.forEach(function(doc) {
 
-function scrollTrainList() {
+                const train = doc.data();
 
-    const trainWindow =
-        document.querySelector(".train-window");
+                const row =
+                    document.createElement("div");
 
-    if (!trainWindow) {
-        return;
-    }
+                row.className = "train-row";
 
-    const visibleHeight =
-        trainWindow.clientHeight;
+                row.innerHTML = `
 
-    const totalHeight =
-        trainList.scrollHeight;
+                    <div class="train-number">
+                        ${train.number || ""}
+                    </div>
 
+                    <div class="train-name">
+                        ${train.name || ""}
+                    </div>
 
-    if (totalHeight > visibleHeight) {
+                    <div class="train-arrival">
+                        ${train.arrival || ""}
+                    </div>
 
-        scrollPosition += scrollSpeed;
+                    <div class="train-departure">
+                        ${train.departure || ""}
+                    </div>
 
+                    <div class="train-platform">
+                        ${train.platform || ""}
+                    </div>
 
-        if (
-            scrollPosition >=
-            totalHeight
-        ) {
+                `;
 
-            scrollPosition = 0;
+                trainList.appendChild(row);
+
+            });
+
+            console.log(
+                "Train data loaded:",
+                snapshot.size
+            );
+
+        },
+
+        function(error) {
+
+            console.error(
+                "Firestore error:",
+                error
+            );
 
         }
 
-
-        trainList.style.transform =
-            "translateY(-" +
-            scrollPosition +
-            "px";
-
-    }
+    );
 
 }
+catch (error) {
 
+    console.error(
+        "Firebase error:",
+        error
+    );
 
-setInterval(
-    scrollTrainList,
-    30
-);
+}
