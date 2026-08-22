@@ -24,11 +24,11 @@ const trains = [
 
    
     {
-        number: "",
-        name: "",
+        number: "56721",
+        name: "Hanis Passenger",
         arrival: "",
-        departure: "",
-        platform: ""
+        departure: "17:15",
+        platform: "8"
     },
 
    
