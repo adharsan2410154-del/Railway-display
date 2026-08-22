@@ -1,4 +1,4 @@
-alert("SCRIPT IS WORKING");
+
 
 /* =========================================
    FIREBASE CONFIGURATION
